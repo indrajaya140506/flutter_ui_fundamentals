@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tahap7_navigation.dart';
+import 'tahap8_passing_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const Tahap8CourseListPage(),
     );
   }
 }
