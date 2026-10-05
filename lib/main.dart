@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tahap2_mediaquery.dart';
+import 'tahap3_layoutbuilder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const Tahap2MediaQueryPage(),
+      home: const Tahap3LayoutBuilderPage(),
     );
   }
 }
