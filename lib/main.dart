@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tahap10_navigation_bar.dart';
+import 'tahap11_adaptive_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const Tahap10NavigationPage(),
+      home: const Tahap11AdaptiveNavigationPage(),
     );
   }
 }
