@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tahap4_expanded_wrap.dart';
+import 'tahap5_gridview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter UI Fundamentals',
+      title: 'Course Explorer',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const Tahap4ExpandedWrapPage(),
+      home: const Tahap5GridViewPage(),
     );
   }
 }
