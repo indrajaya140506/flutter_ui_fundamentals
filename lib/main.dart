@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tahap6_scrollable.dart';
+import 'tahap7_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const Tahap6ScrollablePage(),
+      home: const HomePage(),
     );
   }
 }
