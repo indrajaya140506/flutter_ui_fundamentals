@@ -16,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
     text: 'Komang Indrajaya Darmawiguna',
   );
 
-  final nimController = TextEditingController(text: 'NIM_ANDA');
+  final nimController = TextEditingController(text: '2455011001');
 
   final commentController = TextEditingController();
 

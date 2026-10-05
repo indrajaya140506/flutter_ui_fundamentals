@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
-import 'tahap15_course_explorer.dart';
+import 'tahap16_debugging.dart';
 
 void main() {
-  runApp(const CourseExplorerApp());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      home: const Tahap16DebuggingPage(),
+    ),
+  );
 }
