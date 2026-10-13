@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'course_state.dart';
 import 'screens/home_page.dart';
 import 'screens/courses_page.dart';
+import 'screens/favorites_page.dart';
 import 'screens/profile_page.dart';
 
 class CourseExplorerApp extends StatelessWidget {
@@ -9,14 +12,17 @@ class CourseExplorerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Course Explorer',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (_) => CourseState(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Course Explorer',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        home: const ResponsiveShell(),
       ),
-      home: const ResponsiveShell(),
     );
   }
 }
@@ -31,17 +37,67 @@ class ResponsiveShell extends StatefulWidget {
 class _ResponsiveShellState extends State<ResponsiveShell> {
   int selectedIndex = 0;
 
-  final List<Widget> pages = const [HomePage(), CoursesPage(), ProfilePage()];
+  final List<Widget> pages = const [
+    HomePage(),
+    CoursesPage(),
+    FavoritesPage(),
+    ProfilePage(),
+  ];
+
+  final List<NavigationDestination> destinations = const [
+    NavigationDestination(
+      icon: Icon(Icons.home_outlined),
+      selectedIcon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.school_outlined),
+      selectedIcon: Icon(Icons.school),
+      label: 'Courses',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.favorite_border),
+      selectedIcon: Icon(Icons.favorite),
+      label: 'Favorite',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.person_outline),
+      selectedIcon: Icon(Icons.person),
+      label: 'Profile',
+    ),
+  ];
+
+  final List<NavigationRailDestination> railDestinations = const [
+    NavigationRailDestination(
+      icon: Icon(Icons.home_outlined),
+      selectedIcon: Icon(Icons.home),
+      label: Text('Home'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.school_outlined),
+      selectedIcon: Icon(Icons.school),
+      label: Text('Courses'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.favorite_border),
+      selectedIcon: Icon(Icons.favorite),
+      label: Text('Favorite'),
+    ),
+    NavigationRailDestination(
+      icon: Icon(Icons.person_outline),
+      selectedIcon: Icon(Icons.person),
+      label: Text('Profile'),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Compact / Medium
         if (constraints.maxWidth < 840) {
           return Scaffold(
             appBar: AppBar(title: const Text('Course Explorer')),
-            body: pages[selectedIndex],
+            body: IndexedStack(index: selectedIndex, children: pages),
             bottomNavigationBar: NavigationBar(
               selectedIndex: selectedIndex,
               onDestinationSelected: (index) {
@@ -49,28 +105,11 @@ class _ResponsiveShellState extends State<ResponsiveShell> {
                   selectedIndex = index;
                 });
               },
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.school_outlined),
-                  selectedIcon: Icon(Icons.school),
-                  label: 'Courses',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.person_outline),
-                  selectedIcon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
+              destinations: destinations,
             ),
           );
         }
 
-        // Expanded
         return Scaffold(
           appBar: AppBar(title: const Text('Course Explorer')),
           body: Row(
@@ -83,26 +122,12 @@ class _ResponsiveShellState extends State<ResponsiveShell> {
                   });
                 },
                 labelType: NavigationRailLabelType.all,
-                destinations: const [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.home_outlined),
-                    selectedIcon: Icon(Icons.home),
-                    label: Text('Home'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.school_outlined),
-                    selectedIcon: Icon(Icons.school),
-                    label: Text('Courses'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.person_outline),
-                    selectedIcon: Icon(Icons.person),
-                    label: Text('Profile'),
-                  ),
-                ],
+                destinations: railDestinations,
               ),
               const VerticalDivider(width: 1),
-              Expanded(child: pages[selectedIndex]),
+              Expanded(
+                child: IndexedStack(index: selectedIndex, children: pages),
+              ),
             ],
           ),
         );
