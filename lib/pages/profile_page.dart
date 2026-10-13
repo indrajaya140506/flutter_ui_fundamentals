@@ -66,6 +66,19 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             const StudentIdentityCard(),
 
+            const SizedBox(height: 20),
+
+            Center(
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/profile.jpg',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 24),
 
             const Text(
