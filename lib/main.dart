@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'tahap7_provider.dart';
+import 'tahap8_model.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Tahap7ProviderPage(),
-    ),
-  );
+      home: Tahap8ModelPage(),
+    );
+  }
 }
