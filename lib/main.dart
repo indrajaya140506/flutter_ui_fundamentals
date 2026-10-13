@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
-import 'tahap8_passing_data.dart';
+import 'tahap2_prop_drilling.dart';
 
 void main() {
-  runApp(const CourseExplorerApp());
-}
-
-class CourseExplorerApp extends StatelessWidget {
-  const CourseExplorerApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  runApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Course Explorer',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const Tahap8CourseListPage(),
-    );
-  }
+      home: Tahap2PropDrillingPage(),
+    ),
+  );
 }
