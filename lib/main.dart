@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'tahap2_prop_drilling.dart';
+import 'tahap3_lifting_state_up.dart';
 
 void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Tahap2PropDrillingPage(),
+      home: Tahap3LiftingStateUpPage(),
     ),
   );
 }
