@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'tahap5_change_notifier.dart';
+import 'package:provider/provider.dart';
+
+import 'tahap6_provider.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Tahap5ChangeNotifierPage(),
+    ChangeNotifierProvider(
+      create: (_) => CourseProvider(),
+      child: const MyApp(),
     ),
   );
 }
