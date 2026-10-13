@@ -12,7 +12,7 @@ class Tahap10RepositoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tahap 10 - Repository'),
+        title: const Text('Tahap 11 - Async State'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
       ),
@@ -32,12 +32,34 @@ class Tahap10RepositoryPage extends StatelessWidget {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
+
             if (provider.isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (provider.errorMessage != null)
-              Text('Gagal memuat data: ${provider.errorMessage}')
+              const Expanded(child: Center(child: CircularProgressIndicator()))
+            else if (provider.error != null)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Gagal memuat data:\n${provider.error}',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<Tahap10CourseProvider>().loadCourses();
+                        },
+                        child: const Text('Coba Lagi'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             else if (provider.courses.isEmpty)
-              const Text('Belum ada data course.')
+              const Expanded(
+                child: Center(child: Text('Belum ada data course.')),
+              )
             else
               Expanded(
                 child: ListView.builder(
@@ -58,13 +80,6 @@ class Tahap10RepositoryPage extends StatelessWidget {
                     );
                   },
                 ),
-              ),
-            if (!provider.isLoading && provider.errorMessage != null)
-              ElevatedButton(
-                onPressed: () {
-                  context.read<Tahap10CourseProvider>().loadCourses();
-                },
-                child: const Text('Coba Lagi'),
               ),
           ],
         ),
