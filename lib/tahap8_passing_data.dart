@@ -39,7 +39,7 @@ class Tahap8CourseListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tahap 8 - Course List')),
+      appBar: AppBar(title: const Text('Tahap 1 - Course Explorer')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,6 +62,8 @@ class Tahap8CourseListPage extends StatelessWidget {
                   'Daftar Course',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 4),
+                const Text('Pilih kursus untuk melihat detail.'),
               ],
             ),
           ),
@@ -79,16 +81,15 @@ class Tahap8CourseListPage extends StatelessWidget {
                       child: Text(course['code'].toString().substring(3)),
                     ),
                     title: Text(
-                      course['title'],
+                      course['title'].toString(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                      '${course['code']} • ${course['credits']} SKS • ${course['status']}',
+                      '${course['code']} • ${course['credits']} SKS • '
+                      '${course['status']}',
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-                    onTap: () {
-                      openDetail(context, course);
-                    },
+                    onTap: () => openDetail(context, course),
                   ),
                 );
               },
@@ -100,13 +101,26 @@ class Tahap8CourseListPage extends StatelessWidget {
   }
 }
 
-class CourseDetailPage extends StatelessWidget {
+class CourseDetailPage extends StatefulWidget {
   final Map<String, dynamic> course;
 
   const CourseDetailPage({super.key, required this.course});
 
   @override
+  State<CourseDetailPage> createState() => _CourseDetailPageState();
+}
+
+class _CourseDetailPageState extends State<CourseDetailPage> {
+  // Local state: status favorit sementara.
+  bool isFavorite = false;
+
+  // Local state: mengatur tampilan detail tambahan.
+  bool showExtraDetail = false;
+
+  @override
   Widget build(BuildContext context) {
+    final course = widget.course;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Course Detail')),
       body: SingleChildScrollView(
@@ -126,29 +140,22 @@ class CourseDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
 
             const Text(
               'Student',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 6),
-
             Text(studentName),
-
             const SizedBox(height: 4),
-
             Text(studentId),
-
             const SizedBox(height: 30),
 
             const Text(
               'Course Information',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 16),
 
             _DetailItem(
@@ -156,26 +163,95 @@ class CourseDetailPage extends StatelessWidget {
               value: course['code'].toString(),
               icon: Icons.code,
             ),
-
             _DetailItem(
               label: 'Title',
               value: course['title'].toString(),
               icon: Icons.menu_book,
             ),
-
             _DetailItem(
               label: 'Credits',
               value: '${course['credits']} SKS',
               icon: Icons.school,
             ),
-
             _DetailItem(
               label: 'Status',
               value: course['status'].toString(),
               icon: Icons.check_circle_outline,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+
+            // Tombol favorit menggunakan setState().
+            Card(
+              child: SwitchListTile(
+                secondary: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : null,
+                ),
+                title: const Text('Kursus Favorit'),
+                subtitle: Text(
+                  isFavorite
+                      ? 'Kursus ditandai sebagai favorit'
+                      : 'Tandai kursus sebagai favorit',
+                ),
+                value: isFavorite,
+                onChanged: (value) {
+                  setState(() {
+                    isFavorite = value;
+                  });
+                },
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // Tombol tampil/sembunyi detail tambahan.
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    showExtraDetail = !showExtraDetail;
+                  });
+                },
+                icon: Icon(
+                  showExtraDetail ? Icons.expand_less : Icons.expand_more,
+                ),
+                label: Text(
+                  showExtraDetail
+                      ? 'Sembunyikan Detail Tambahan'
+                      : 'Tampilkan Detail Tambahan',
+                ),
+              ),
+            ),
+
+            // Konten hanya muncul jika showExtraDetail bernilai true.
+            if (showExtraDetail)
+              Card(
+                margin: const EdgeInsets.only(top: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Detail Tambahan',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Nama kursus: ${course['title']}'),
+                      Text('Kode kursus: ${course['code']}'),
+                      Text('Beban belajar: ${course['credits']} SKS'),
+                      Text('Status: ${course['status']}'),
+                    ],
+                  ),
+                ),
+              ),
+
+            const SizedBox(height: 24),
 
             SizedBox(
               width: double.infinity,

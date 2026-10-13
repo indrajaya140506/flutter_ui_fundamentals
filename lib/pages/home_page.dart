@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 20),
 
           const Text(
-            'Welcome to Course Explorer',
+            'Welcome to Course Explorer indrajaya ',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
 
