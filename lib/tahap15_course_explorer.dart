@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'pages/home_page.dart';
-import 'pages/courses_page.dart';
-import 'pages/profile_page.dart';
+import 'screens/home_page.dart';
+import 'screens/courses_page.dart';
+import 'screens/profile_page.dart';
 
 class CourseExplorerApp extends StatelessWidget {
   const CourseExplorerApp({super.key});

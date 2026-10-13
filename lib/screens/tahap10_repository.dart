@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/tahap10_course_provider.dart';
+import '../providers/tahap10_course_provider.dart';
 
 class Tahap10RepositoryPage extends StatelessWidget {
   const Tahap10RepositoryPage({super.key});
