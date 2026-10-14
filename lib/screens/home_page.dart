@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                   const StudentIdentityCard(),
                   const SizedBox(height: 20),
                   const Text(
-                    'Welcome to Course Explorer v2',
+                    'Welcome to Course Explorer v2 Indrajaya  Darmmawiguna',
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
