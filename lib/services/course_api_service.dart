@@ -5,16 +5,20 @@ import 'package:http/http.dart' as http;
 
 import '../models/course.dart';
 
-class HttpCourseService {
-  static const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+class CourseApiService {
+  CourseApiService({http.Client? client}) : _client = client ?? http.Client();
 
-  Future<List<Course>> fetchCourses() async {
-    final response = await http.get(Uri.parse(apiUrl));
+  final http.Client _client;
+
+  static const String baseUrl = 'https://jsonplaceholder.typicode.com';
+
+  Future<List<Course>> getCourses() async {
+    final response = await _client.get(Uri.parse('$baseUrl/posts'));
 
     debugPrint('HTTP Status: ${response.statusCode}');
 
     if (response.statusCode != 200) {
-      throw Exception('HTTP ${response.statusCode}');
+      throw Exception('Gagal mengambil course: HTTP ${response.statusCode}');
     }
 
     final List<dynamic> data = jsonDecode(response.body) as List<dynamic>;
@@ -22,7 +26,6 @@ class HttpCourseService {
     final courses = data.map((item) {
       final post = item as Map<String, dynamic>;
 
-      // Memetakan JSONPlaceholder ke model Course.
       return Course(
         id: post['id'] as int?,
         code: 'POST-${post['id']}',
@@ -36,5 +39,9 @@ class HttpCourseService {
     debugPrint('Jumlah data berhasil diambil: ${courses.length}');
 
     return courses;
+  }
+
+  void dispose() {
+    _client.close();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../services/http_course_service.dart';
+import '../models/course.dart';
+import '../services/course_api_service.dart';
 import '../widgets/student_identity_card.dart';
 
 class Tahap3CourseApiPage extends StatefulWidget {
@@ -11,12 +12,12 @@ class Tahap3CourseApiPage extends StatefulWidget {
 }
 
 class _Tahap3CourseApiPageState extends State<Tahap3CourseApiPage> {
-  late Future<List<dynamic>> _coursesFuture;
+  late Future<List<Course>> _coursesFuture;
 
   @override
   void initState() {
     super.initState();
-    _coursesFuture = HttpCourseService().fetchCourses();
+    _coursesFuture = CourseApiService().getCourses();
   }
 
   @override
@@ -30,7 +31,7 @@ class _Tahap3CourseApiPageState extends State<Tahap3CourseApiPage> {
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF0F172A),
       ),
-      body: FutureBuilder<List<dynamic>>(
+      body: FutureBuilder<List<Course>>(
         future: _coursesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,7 +58,8 @@ class _Tahap3CourseApiPageState extends State<Tahap3CourseApiPage> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _coursesFuture = HttpCourseService().fetchCourses();
+                          _coursesFuture = _coursesFuture = CourseApiService()
+                              .getCourses();
                         });
                       },
                       child: const Text('Coba Lagi'),

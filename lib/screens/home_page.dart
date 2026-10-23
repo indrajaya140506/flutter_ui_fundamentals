@@ -292,36 +292,42 @@ class HomePage extends StatelessWidget {
                           const SizedBox(height: 18),
 
                           // Summary cards
+
+                          // Summary cards
                           LayoutBuilder(
                             builder: (context, constraints) {
                               final isWide = constraints.maxWidth >= 560;
 
-                              return Flex(
-                                direction: isWide
-                                    ? Axis.horizontal
-                                    : Axis.vertical,
+                              final cards = [
+                                SummaryCard(
+                                  icon: Icons.menu_book_rounded,
+                                  title: 'Courses',
+                                  value: '${courses.length}',
+                                ),
+                                SummaryCard(
+                                  icon: Icons.task_alt_rounded,
+                                  title: 'Completed',
+                                  value: '$completed',
+                                ),
+                              ];
+
+                              if (isWide) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(child: cards[0]),
+                                    const SizedBox(width: 16),
+                                    Expanded(child: cards[1]),
+                                  ],
+                                );
+                              }
+
+                              return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Expanded(
-                                    flex: isWide ? 1 : 0,
-                                    child: SummaryCard(
-                                      icon: Icons.menu_book_rounded,
-                                      title: 'Courses',
-                                      value: '${courses.length}',
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: isWide ? 16 : 0,
-                                    height: isWide ? 0 : 14,
-                                  ),
-                                  Expanded(
-                                    flex: isWide ? 1 : 0,
-                                    child: SummaryCard(
-                                      icon: Icons.task_alt_rounded,
-                                      title: 'Completed',
-                                      value: '$completed',
-                                    ),
-                                  ),
+                                  cards[0],
+                                  const SizedBox(height: 14),
+                                  cards[1],
                                 ],
                               );
                             },

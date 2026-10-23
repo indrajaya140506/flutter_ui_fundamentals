@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'course_state.dart';
 import 'providers/tahap10_course_provider.dart';
 import 'repositories/course_repository.dart';
-import 'services/course_service.dart';
+import 'services/course_api_service.dart';
 import 'screens/home_page.dart';
 import 'screens/courses_page.dart';
 import 'screens/favorites_page.dart';
@@ -20,7 +20,7 @@ class CourseExplorerApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CourseState()),
         ChangeNotifierProvider(
           create: (_) =>
-              Tahap10CourseProvider(CourseRepository(CourseService()))
+              Tahap10CourseProvider(CourseRepository(CourseApiService()))
                 ..loadCourses(),
         ),
       ],
