@@ -31,6 +31,26 @@ class Tahap10CourseProvider extends ChangeNotifier {
   }
 
   Tahap10CourseProvider(this.repository);
+  Future<void> updateCourse(int id, Course course) async {
+    if (isSaving) {
+      throw Exception('Penyimpanan sedang berlangsung.');
+    }
+
+    isSaving = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      await repository.updateCourse(id, course);
+      await loadCourses();
+    } catch (e) {
+      error = e.toString();
+      rethrow;
+    } finally {
+      isSaving = false;
+      notifyListeners();
+    }
+  }
 
   List<Course> courses = [];
   bool isLoading = false;

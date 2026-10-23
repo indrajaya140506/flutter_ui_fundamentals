@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../course_state.dart';
 import '../widgets/student_identity_card.dart';
+import '../models/course.dart';
+import 'edit_course_page.dart';
 
 class CourseDetailPage extends StatelessWidget {
   final Map<String, dynamic> course;
@@ -94,6 +96,36 @@ class CourseDetailPage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 28),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      final selectedCourse = Course(
+                        id: course['id'] as int?,
+                        code: course['code'].toString(),
+                        title: course['title'].toString(),
+                        credits:
+                            int.tryParse(course['credits'].toString()) ?? 0,
+                        status: course['status'].toString(),
+                        category: course['category'].toString(),
+                      );
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              EditCoursePage(course: selectedCourse),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.edit_rounded),
+                    label: const Text('Edit Course'),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
