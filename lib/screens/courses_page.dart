@@ -6,6 +6,7 @@ import '../providers/tahap10_course_provider.dart';
 import '../widgets/student_identity_card.dart';
 import '../widgets/course_card.dart';
 import 'course_detail_page.dart';
+import '../widgets/error_view.dart';
 
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
@@ -19,30 +20,14 @@ class CoursesPage extends StatelessWidget {
         }
 
         if (provider.error != null) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.error_outline, size: 48),
-                  const SizedBox(height: 12),
-                  const Text('Gagal memuat data course'),
-                  const SizedBox(height: 8),
-                  Text(provider.error!),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: provider.loadCourses,
-                    child: const Text('Coba Lagi'),
-                  ),
-                ],
-              ),
-            ),
+          return ErrorView(
+            message: provider.error!,
+            onRetry: provider.loadCourses,
           );
         }
 
         if (provider.courses.isEmpty) {
-          return const Center(child: Text('Belum ada data course.'));
+          return const Center(child: Text('Data course belum tersedia'));
         }
 
         return Consumer<CourseState>(
