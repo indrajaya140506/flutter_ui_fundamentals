@@ -4,8 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/course.dart';
+import 'course_data_source.dart';
 
-class CourseApiService {
+class CourseApiService implements CourseDataSource {
   CourseApiService({http.Client? client}) : _client = client ?? http.Client();
 
   final http.Client _client;
@@ -13,6 +14,7 @@ class CourseApiService {
   static const String baseUrl = 'https://jsonplaceholder.typicode.com';
 
   // GET: Mengambil daftar course
+  @override
   Future<List<Course>> getCourses() async {
     final response = await _client.get(Uri.parse('$baseUrl/posts'));
 
@@ -39,6 +41,7 @@ class CourseApiService {
   }
 
   // POST: Membuat course baru
+  @override
   Future<Course> createCourse(Course course) async {
     final response = await _client.post(
       Uri.parse('$baseUrl/posts'),
@@ -65,6 +68,7 @@ class CourseApiService {
   }
 
   // PUT: Memperbarui course
+  @override
   Future<void> updateCourse(int id, Course course) async {
     final response = await _client.put(
       Uri.parse('$baseUrl/posts/$id'),
@@ -80,6 +84,7 @@ class CourseApiService {
   }
 
   // DELETE: Menghapus course
+  @override
   Future<void> deleteCourse(int id) async {
     final response = await _client.delete(Uri.parse('$baseUrl/posts/$id'));
 
