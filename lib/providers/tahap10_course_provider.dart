@@ -4,6 +4,31 @@ import '../repositories/course_repository.dart';
 
 class Tahap10CourseProvider extends ChangeNotifier {
   final CourseRepository repository;
+  bool isSaving = false;
+
+  Future<Course> createCourse(Course course) async {
+    if (isSaving) {
+      throw Exception('Penyimpanan sedang berlangsung.');
+    }
+
+    isSaving = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final createdCourse = await repository.createCourse(course);
+
+      await loadCourses();
+
+      return createdCourse;
+    } catch (e) {
+      error = e.toString();
+      rethrow;
+    } finally {
+      isSaving = false;
+      notifyListeners();
+    }
+  }
 
   Tahap10CourseProvider(this.repository);
 

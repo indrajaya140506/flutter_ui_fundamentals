@@ -12,10 +12,11 @@ class CourseApiService {
 
   static const String baseUrl = 'https://jsonplaceholder.typicode.com';
 
+  // GET: Mengambil daftar course
   Future<List<Course>> getCourses() async {
     final response = await _client.get(Uri.parse('$baseUrl/posts'));
 
-    debugPrint('HTTP Status: ${response.statusCode}');
+    debugPrint('GET Status: ${response.statusCode}');
 
     if (response.statusCode != 200) {
       throw Exception('Gagal mengambil course: HTTP ${response.statusCode}');
@@ -23,7 +24,7 @@ class CourseApiService {
 
     final List<dynamic> data = jsonDecode(response.body) as List<dynamic>;
 
-    final courses = data.map((item) {
+    return data.map((item) {
       final post = item as Map<String, dynamic>;
 
       return Course(
@@ -35,10 +36,32 @@ class CourseApiService {
         category: 'API Practice',
       );
     }).toList();
+  }
 
-    debugPrint('Jumlah data berhasil diambil: ${courses.length}');
+  // POST: Membuat course baru
+  Future<Course> createCourse(Course course) async {
+    final response = await _client.post(
+      Uri.parse('$baseUrl/posts'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(course.toJson()),
+    );
 
-    return courses;
+    debugPrint('POST Status: ${response.statusCode}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+      return Course(
+        id: data['id'] as int?,
+        code: data['code'] as String? ?? course.code,
+        title: data['title'] as String? ?? course.title,
+        credits: (data['credits'] as num?)?.toInt() ?? course.credits,
+        status: data['status'] as String? ?? course.status,
+        category: data['category'] as String? ?? course.category,
+      );
+    }
+
+    throw Exception('Gagal membuat course: HTTP ${response.statusCode}');
   }
 
   void dispose() {

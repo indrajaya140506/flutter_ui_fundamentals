@@ -7,6 +7,7 @@ import '../widgets/student_identity_card.dart';
 import '../widgets/summary_card.dart';
 import '../widgets/course_card.dart';
 import 'course_detail_page.dart';
+import 'add_course_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -286,6 +287,22 @@ class HomePage extends StatelessWidget {
                               fontSize: 13,
                               color: mutedColor,
                               height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const AddCoursePage(),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.add_rounded),
+                              label: const Text('Tambah Course'),
                             ),
                           ),
 
