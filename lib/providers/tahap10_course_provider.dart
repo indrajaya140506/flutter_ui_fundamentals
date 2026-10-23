@@ -1,14 +1,41 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 import '../models/course.dart';
 import '../repositories/course_repository.dart';
 
 class Tahap10CourseProvider extends ChangeNotifier {
   final CourseRepository repository;
-  bool isSaving = false;
 
-  Future<Course> createCourse(Course course) async {
+  Tahap10CourseProvider(this.repository);
+
+  List<Course> courses = [];
+
+  bool isLoading = false;
+  bool isSaving = false;
+  bool isDeleting = false;
+
+  String? error;
+
+  // GET: Mengambil daftar course
+  Future<void> loadCourses() async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      courses = await repository.getCourses();
+    } catch (e) {
+      error = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // CREATE: Menambahkan course
+  Future<void> createCourse(Course course) async {
     if (isSaving) {
-      throw Exception('Penyimpanan sedang berlangsung.');
+      throw Exception('Proses penyimpanan sedang berlangsung.');
     }
 
     isSaving = true;
@@ -16,11 +43,8 @@ class Tahap10CourseProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final createdCourse = await repository.createCourse(course);
-
+      await repository.createCourse(course);
       await loadCourses();
-
-      return createdCourse;
     } catch (e) {
       error = e.toString();
       rethrow;
@@ -30,10 +54,10 @@ class Tahap10CourseProvider extends ChangeNotifier {
     }
   }
 
-  Tahap10CourseProvider(this.repository);
+  // UPDATE: Memperbarui course
   Future<void> updateCourse(int id, Course course) async {
     if (isSaving) {
-      throw Exception('Penyimpanan sedang berlangsung.');
+      throw Exception('Proses penyimpanan sedang berlangsung.');
     }
 
     isSaving = true;
@@ -52,21 +76,24 @@ class Tahap10CourseProvider extends ChangeNotifier {
     }
   }
 
-  List<Course> courses = [];
-  bool isLoading = false;
-  String? error;
+  // DELETE: Menghapus course
+  Future<void> deleteCourse(int id) async {
+    if (isDeleting) {
+      throw Exception('Proses penghapusan sedang berlangsung.');
+    }
 
-  Future<void> loadCourses() async {
-    isLoading = true;
+    isDeleting = true;
     error = null;
     notifyListeners();
 
     try {
-      courses = await repository.getCourses();
+      await repository.deleteCourse(id);
+      await loadCourses();
     } catch (e) {
       error = e.toString();
+      rethrow;
     } finally {
-      isLoading = false;
+      isDeleting = false;
       notifyListeners();
     }
   }

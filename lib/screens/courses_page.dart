@@ -5,11 +5,71 @@ import '../course_state.dart';
 import '../providers/tahap10_course_provider.dart';
 import '../widgets/student_identity_card.dart';
 import '../widgets/course_card.dart';
-import 'course_detail_page.dart';
 import '../widgets/error_view.dart';
+import 'course_detail_page.dart';
 
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
+
+  Future<void> _deleteCourse(
+    BuildContext context,
+    Tahap10CourseProvider provider,
+    CourseState favoriteState,
+    int id,
+    String code,
+    String title,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Hapus Course?'),
+        content: Text('Yakin ingin menghapus "$title"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) return;
+
+    try {
+      await provider.deleteCourse(id);
+
+      if (!context.mounted) return;
+
+      // Hapus dari Favorites jika masih menjadi favorit.
+      if (favoriteState.isFavorite(code)) {
+        favoriteState.toggleFavorite(code);
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Course "$title" berhasil dihapus.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal menghapus course: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +96,50 @@ class CoursesPage extends StatelessWidget {
               builder: (context, constraints) {
                 final isMobile = constraints.maxWidth < 840;
 
-                final courseCards = provider.courses.map((course) {
+                Widget buildCourseItem(int index) {
+                  final course = provider.courses[index];
                   final data = course.toMap();
-                  final code = course.code;
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: CourseCard(
-                      course: data,
-                      isFavorite: favoriteState.isFavorite(code),
-                      onFavorite: () {
-                        favoriteState.toggleFavorite(code);
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => CourseDetailPage(course: data),
+                  return Column(
+                    children: [
+                      CourseCard(
+                        course: data,
+                        isFavorite: favoriteState.isFavorite(course.code),
+                        onFavorite: () {
+                          favoriteState.toggleFavorite(course.code);
+                        },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CourseDetailPage(course: data),
+                            ),
+                          );
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          tooltip: 'Delete Course',
+                          onPressed: provider.isDeleting || course.id == null
+                              ? null
+                              : () => _deleteCourse(
+                                  context,
+                                  provider,
+                                  favoriteState,
+                                  course.id!,
+                                  course.code,
+                                  course.title,
+                                ),
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            color: Colors.red,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                    ],
                   );
-                }).toList();
+                }
 
                 if (isMobile) {
                   return ListView(
@@ -74,7 +155,10 @@ class CoursesPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      ...courseCards,
+                      ...List.generate(
+                        provider.courses.length,
+                        buildCourseItem,
+                      ),
                     ],
                   );
                 }
@@ -86,27 +170,10 @@ class CoursesPage extends StatelessWidget {
                     crossAxisCount: 3,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 1.45,
+                    childAspectRatio: 1.25,
                   ),
                   itemBuilder: (context, index) {
-                    final course = provider.courses[index];
-                    final data = course.toMap();
-
-                    return CourseCard(
-                      course: data,
-                      isFavorite: favoriteState.isFavorite(course.code),
-                      onFavorite: () {
-                        favoriteState.toggleFavorite(course.code);
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => CourseDetailPage(course: data),
-                          ),
-                        );
-                      },
-                    );
+                    return buildCourseItem(index);
                   },
                 );
               },
