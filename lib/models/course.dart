@@ -1,4 +1,5 @@
 class Course {
+  final int? id;
   final String code;
   final String title;
   final int credits;
@@ -6,25 +7,28 @@ class Course {
   final String category;
 
   const Course({
+    this.id,
     required this.code,
     required this.title,
     required this.credits,
-    required this.status,
-    required this.category,
+    this.status = 'planned',
+    this.category = 'General',
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      code: json['code'].toString(),
-      title: json['title'].toString(),
-      credits: (json['credits'] as num).toInt(),
-      status: json['status'].toString(),
-      category: json['category']?.toString() ?? 'General',
+      id: json['id'] as int?,
+      code: json['code'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      credits: (json['credits'] as num?)?.toInt() ?? 0,
+      status: json['status'] as String? ?? 'planned',
+      category: json['category'] as String? ?? 'General',
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'code': code,
       'title': title,
       'credits': credits,
@@ -32,4 +36,7 @@ class Course {
       'category': category,
     };
   }
+
+  // Dipertahankan agar kode lama yang menggunakan toMap() tetap kompatibel.
+  Map<String, dynamic> toMap() => toJson();
 }

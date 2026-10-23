@@ -1,33 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
-// Endpoint latihan: mengembalikan daftar post berbentuk JSON array.
-const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+import '../services/http_course_service.dart';
 
-/// Mengambil daftar post dari API menggunakan HTTP GET.
-Future<List<dynamic>> fetchCourses() async {
-  final response = await http.get(Uri.parse(apiUrl));
-
-  debugPrint('HTTP Status: ${response.statusCode}');
-
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body) as List<dynamic>;
-
-    debugPrint('Jumlah item berhasil diambil: ${data.length}');
-
-    return data;
-  }
-
-  throw Exception('HTTP ${response.statusCode}');
-}
-
-/// Menjalankan pengujian GET secara manual.
 Future<void> testHttpGet() async {
   try {
-    final courses = await fetchCourses();
-    debugPrint('GET berhasil. Total item: ${courses.length}');
+    final courses = await HttpCourseService().fetchCourses();
+
+    debugPrint('GET berhasil. Total course: ${courses.length}');
+
+    for (final course in courses.take(3)) {
+      debugPrint('${course.code} | ${course.title} | ${course.status}');
+    }
   } catch (error) {
     debugPrint('GET gagal: $error');
   }
