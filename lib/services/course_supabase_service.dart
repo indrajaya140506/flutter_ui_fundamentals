@@ -14,11 +14,10 @@ class CourseSupabaseService implements CourseDataSource {
     final data = await _supabase.from('courses').select().order('id');
 
     return (data as List)
-        .map((e) => Course.fromJson(Map<String, dynamic>.from(e as Map)))
+        .map((item) => Course.fromJson(Map<String, dynamic>.from(item as Map)))
         .toList();
   }
 
-  // Akan diimplementasikan pada tahap berikutnya.
   @override
   Future<Course> createCourse(Course course) async {
     final row = await _supabase

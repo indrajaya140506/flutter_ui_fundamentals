@@ -16,7 +16,7 @@ class CourseExplorerApp extends StatelessWidget {
       create: (_) => CourseState(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Course Explorer',
+        title: 'Course Data Manager',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
@@ -96,7 +96,7 @@ class _ResponsiveShellState extends State<ResponsiveShell> {
       builder: (context, constraints) {
         if (constraints.maxWidth < 840) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Course Explorer')),
+            appBar: AppBar(title: const Text('Course Data Manager')),
             body: IndexedStack(index: selectedIndex, children: pages),
             bottomNavigationBar: NavigationBar(
               selectedIndex: selectedIndex,
@@ -111,7 +111,7 @@ class _ResponsiveShellState extends State<ResponsiveShell> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Course Explorer')),
+          appBar: AppBar(title: const Text('Course Data Manager')),
           body: Row(
             children: [
               NavigationRail(

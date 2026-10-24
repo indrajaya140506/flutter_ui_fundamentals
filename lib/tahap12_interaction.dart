@@ -64,7 +64,7 @@ class _Tahap12InteractionPageState extends State<Tahap12InteractionPage> {
           const SizedBox(height: 24),
 
           const Text(
-            'Course Explorer',
+            'Course Data Manager',
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
 

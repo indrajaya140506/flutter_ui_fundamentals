@@ -157,7 +157,7 @@ class _Tahap11AdaptiveNavigationPageState
                   Text(pageTitles[selectedIndex]),
                   const SizedBox(height: 3),
                   const Text(
-                    'COURSE EXPLORER',
+                    'Course Data Manager',
                     style: TextStyle(
                       fontSize: 9,
                       letterSpacing: 1.8,
@@ -318,7 +318,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Selamat datang di Course Explorer. '
+                          'Selamat datang di Course Data Manager. '
                           'Terus belajar, kembangkan kemampuan, '
                           'dan raih tujuanmu.',
                           style: TextStyle(
@@ -830,7 +830,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                'COURSE EXPLORER  •  KEEP LEARNING, KEEP GROWING',
+                'Course Data Manager  •  KEEP LEARNING, KEEP GROWING',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 10,

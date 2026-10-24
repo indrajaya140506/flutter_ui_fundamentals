@@ -39,7 +39,7 @@ class Tahap8CourseListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tahap 1 - Course Explorer')),
+      appBar: AppBar(title: const Text('Tahap 1 - Course Data Manager')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

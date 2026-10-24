@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
               const Icon(Icons.home, size: 80),
               const SizedBox(height: 20),
               const Text(
-                'Welcome to Course Explorer',
+                'Welcome to Course Data Manager',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),

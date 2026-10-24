@@ -75,7 +75,7 @@ class Tahap5GridViewPage extends StatelessWidget {
                 Text(studentId, style: const TextStyle(fontSize: 16)),
                 const SizedBox(height: 20),
                 Text(
-                  'Course Explorer',
+                  'Course Data Manager',
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

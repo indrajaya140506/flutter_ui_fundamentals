@@ -207,7 +207,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 22),
                                     const Text(
-                                      'Welcome to\nCourse Explorer v2',
+                                      'Welcome to\nCourse Data Manager',
                                       style: TextStyle(
                                         fontSize: 30,
                                         height: 1.2,
@@ -218,7 +218,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 12),
                                     Text(
-                                      'Indrajaya Darmmawiguna',
+                                      'Komang Indrajaya Darmawiguna',
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -486,7 +486,7 @@ class HomePage extends StatelessWidget {
                           // Footer
                           Center(
                             child: Text(
-                              'COURSE EXPLORER  •  KEEP LEARNING, KEEP GROWING',
+                              'COURSE DATA MANAGER   •  KEEP LEARNING, KEEP GROWING',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 10,
