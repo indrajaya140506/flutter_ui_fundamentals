@@ -4,8 +4,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/supabase_config.dart';
 import 'providers/tahap10_course_provider.dart';
 import 'repositories/course_repository.dart';
-import 'services/course_api_service.dart';
+
 import 'tahap14_course_explorer.dart';
+import 'services/course_supabase_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,10 +24,8 @@ Future<void> main() async {
 
   await Supabase.initialize(url: url, publishableKey: publishableKey);
 
-  final courseApiService = CourseApiService();
-
-  final courseRepository = CourseRepository(courseApiService);
-
+  final courseSupabaseService = CourseSupabaseService();
+  final courseRepository = CourseRepository(courseSupabaseService);
   final courseProvider = Tahap10CourseProvider(courseRepository);
 
   await courseProvider.loadCourses();

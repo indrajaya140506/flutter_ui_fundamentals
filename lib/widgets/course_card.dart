@@ -16,6 +16,15 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Menangani nilai null dari data Supabase.
+    final String code = course['code']?.toString() ?? '-';
+    final String title = course['title']?.toString() ?? 'Tanpa judul';
+    final String category = course['category']?.toString() ?? 'General';
+    final String status = course['status']?.toString() ?? 'planned';
+
+    // Mencegah error jika format kode lebih pendek dari 3 karakter.
+    final String avatarText = code.length > 3 ? code.substring(3) : code;
+
     return Card(
       elevation: 2,
       child: InkWell(
@@ -25,32 +34,29 @@ class CourseCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 28,
-                child: Text(course['code'].toString().substring(3)),
-              ),
+              CircleAvatar(radius: 28, child: Text(avatarText)),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      course['code'],
+                      code,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      course['title'],
+                      title,
                       style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(course['category']),
+                    Text(category),
                     const SizedBox(height: 4),
                     Text(
-                      course['status'],
+                      status,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],

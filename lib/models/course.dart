@@ -6,6 +6,9 @@ class Course {
   final String status;
   final DateTime? createdAt;
 
+  // Kompatibilitas dengan halaman UI yang sudah ada.
+  final String category;
+
   const Course({
     this.id,
     required this.code,
@@ -13,21 +16,24 @@ class Course {
     required this.credits,
     required this.status,
     this.createdAt,
+    this.category = 'General',
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      id: json['id'] as int?,
-      code: json['code'] as String,
-      title: json['title'] as String,
-      credits: json['credits'] as int,
-      status: json['status'] as String,
+      id: json['id'] == null ? null : (json['id'] as num).toInt(),
+      code: json['code'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      credits: (json['credits'] as num?)?.toInt() ?? 0,
+      status: json['status'] as String? ?? 'planned',
       createdAt: json['created_at'] == null
           ? null
-          : DateTime.parse(json['created_at'] as String),
+          : DateTime.parse(json['created_at'].toString()),
+      category: json['category'] as String? ?? 'General',
     );
   }
 
+  // Khusus payload tabel Supabase courses.
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
@@ -39,6 +45,6 @@ class Course {
     };
   }
 
-  // Dipertahankan agar kode lama yang menggunakan toMap() tetap kompatibel.
+  // Mempertahankan kompatibilitas kode lama.
   Map<String, dynamic> toMap() => toJson();
 }
