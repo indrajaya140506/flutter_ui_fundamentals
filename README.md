@@ -1,80 +1,132 @@
-# flutter_ui_fundamentals
+# Course Data Manager
 
-A new Flutter project.
+Aplikasi Flutter untuk mengelola data course secara terstruktur dengan integrasi Supabase sebagai backend. Proyek ini dikembangkan dalam praktikum Flutter UI Fundamentals dengan penerapan widget, layout, state management, REST API, repository pattern, debugging, dan keamanan dasar.
 
-## Getting Started
+## Identitas Mahasiswa
 
-This project is a starting point for a Flutter application.
+- **NIM:** 2455011001
+- **Nama:** Komang Indrajaya Darmawiguna
 
-A few resources to get you started if this is your first Flutter project:
+## Fitur Utama
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Menampilkan daftar course.
+- Menambahkan course baru.
+- Mengedit informasi course.
+- Menghapus course.
+- Validasi input.
+- Pengelolaan state menggunakan Provider.
+- Penanganan error dan pemuatan ulang data.
+- Integrasi database menggunakan Supabase.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Teknologi
 
-## Flutter UI Fundamentals
-
-NIM: 2455011001  
-Nama: Komang Indrajaya Darmawiguna
-
-Project ini merupakan hasil praktikum Flutter UI Fundamentals yang mencakup widget dasar, layout, state, collection, JSON, FutureBuilder, Learning Dashboard, dan debugging.
+- Flutter
+- Dart
+- Provider
+- Supabase
+- REST API
+- Git dan GitHub
 
 ## Arsitektur Project
 
-\- `models/`: Menyimpan struktur data course.
+Proyek menggunakan pemisahan tanggung jawab agar kode lebih terstruktur, mudah dipelihara, dan dikembangkan.
 
-\- `services/`: Memuat data JSON menggunakan rootBundle dan jsonDecode.
-
-\- `repositories/`: Menjadi perantara antara Provider dan Service.
-
-\- `providers/`: Mengelola state dan menyediakan data untuk UI.
-
-\- `screens/`: Menampilkan halaman dan antarmuka aplikasi.
-
-\- `main.dart`: Titik masuk aplikasi Flutter.
-
-Arah dependency:
-
-Screen → Provider → Repository → Service/Data Source.
-
-Pemisahan tanggung jawab membuat kode lebih terstruktur dan mudah dipelihara.
-
-# Tahap 1. Membaca REST Endpoint dan JSON
-
-## 1. Endpoint yang Digunakan
-
-- **URL Endpoint:** https://jsonplaceholder.typicode.com/posts/1
-- **HTTP Method:** GET
-- **Status Code:** 200 OK (apabila permintaan berhasil)
-- **Resource:** posts
-- **Response Format:** JSON
-
-## 2. Response Body
-
-```json
-{
-  "userId": 1,
-  "id": 1,
-  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-  "body": "quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam"
-}
+```text
+lib/
+├── config/
+├── models/
+├── providers/
+├── repositories/
+├── screens/
+├── services/
+├── widgets/
+└── main.dart
 ```
 
-## 3. Identifikasi Field JSON
+**Alur dependency:**
 
-| Field  | Tipe Data | Keterangan                           |
-| ------ | --------- | ------------------------------------ |
-| userId | Integer   | ID pengguna yang terkait dengan post |
-| id     | Integer   | ID unik post                         |
-| title  | String    | Judul post                           |
-| body   | String    | Isi atau konten post                 |
+```text
+Screen → Provider → Repository → Service → Data Source
+```
 
-## 4. Catatan/Temuan
+- **Config:** konfigurasi koneksi backend.
+- **Models:** struktur data course.
+- **Providers:** mengelola state aplikasi.
+- **Repositories:** menjadi perantara antara provider dan sumber data.
+- **Services:** menangani komunikasi dengan API atau Supabase.
+- **Screens:** menampilkan halaman aplikasi.
+- **Widgets:** komponen antarmuka yang dapat digunakan kembali.
+- **Main:** titik masuk aplikasi dan konfigurasi sumber data aktif.
 
-Endpoint yang digunakan adalah `https://jsonplaceholder.typicode.com/posts/1` dengan metode HTTP GET untuk mengambil satu resource dari resource `posts`. Response body yang diterima berbentuk JSON dengan empat field utama, yaitu `userId`, `id`, `title`, dan `body`. Status HTTP 200 OK menunjukkan bahwa permintaan berhasil apabila status tersebut teramati saat pengujian.
+## Backend dan Database
 
-JSONPlaceholder digunakan sebagai API latihan untuk memahami proses pengambilan data dari REST API. Operasi penulisan data pada layanan ini hanya disimulasikan sehingga perubahan tidak tersimpan secara permanen.
+Supabase digunakan sebagai backend untuk menyimpan dan mengelola data course. Kebijakan Row Level Security (RLS) menjadi salah satu lapisan pengamanan akses data.
+
+JSONPlaceholder juga digunakan pada tahap praktikum REST API untuk mempelajari request HTTP, respons JSON, dan pemetaan data. Operasi penulisan pada JSONPlaceholder bersifat simulasi dan tidak menyimpan perubahan secara permanen.
+
+## Persyaratan
+
+- Flutter SDK dan Dart SDK.
+- Editor kode, seperti Visual Studio Code.
+- Emulator Android atau perangkat yang mendukung Flutter.
+- Proyek Supabase yang telah dikonfigurasi.
+
+## Cara Menjalankan
+
+1. Clone repository:
+
+   ```bash
+   git clone https://github.com/indrajaya140506/flutter_ui_fundamentals.git
+   ```
+
+2. Masuk ke folder proyek:
+
+   ```bash
+   cd flutter_ui_fundamentals
+   ```
+
+3. Unduh dependensi:
+
+   ```bash
+   flutter pub get
+   ```
+
+4. Pastikan konfigurasi Supabase tersedia pada:
+
+   ```text
+   lib/config/supabase_config.dart
+   ```
+
+   Gunakan URL proyek dan publishable/anon key yang sesuai. Jangan menggunakan `service_role` key di aplikasi Flutter.
+
+5. Jalankan aplikasi:
+
+   ```bash
+   flutter run
+   ```
+
+## Pemeriksaan Kode
+
+Format kode Dart:
+
+```bash
+dart format lib
+```
+
+Analisis statis:
+
+```bash
+flutter analyze
+```
+
+## Keamanan
+
+- Jangan memasukkan password, token pribadi, atau `service_role` key ke repository.
+- Jangan commit file `.env` yang berisi secret.
+- Terapkan RLS dan authorization pada backend sesuai kebutuhan akses.
+- Jangan mengandalkan validasi UI sebagai pengganti validasi backend.
+- Hindari menampilkan informasi sensitif dalam screenshot dan log.
+
+## Repository
+
+GitHub: https://github.com/indrajaya140506/flutter_ui_fundamentals
