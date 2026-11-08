@@ -13,13 +13,18 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final _nameC = TextEditingController();
   final _emailC = TextEditingController();
   final _passC = TextEditingController();
   final _confirmC = TextEditingController();
+
+  String _role = 'seeker';
   bool _loading = false;
 
   @override
   void dispose() {
+    _nameC.dispose();
     _emailC.dispose();
     _passC.dispose();
     _confirmC.dispose();
@@ -32,13 +37,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
+
     setState(() => _loading = true);
 
     try {
       final res = await AuthService.instance.register(
         email: _emailC.text.trim(),
         password: _passC.text,
+        name: _nameC.text.trim(),
+        role: _role,
       );
+
       if (!mounted) return;
 
       if (res.session != null) {
@@ -57,7 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
     } catch (_) {
       _showMessage('Terjadi kesalahan. Coba lagi.');
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() => _loading = false);
+      }
     }
   }
 
@@ -71,38 +82,88 @@ class _RegisterPageState extends State<RegisterPage> {
           key: _formKey,
           child: ListView(
             children: [
+              // Nama
+              TextFormField(
+                controller: _nameC,
+                decoration: const InputDecoration(labelText: 'Nama'),
+                validator: (v) =>
+                    (v == null || v.trim().isEmpty) ? 'Nama wajib diisi' : null,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Role
+              DropdownButtonFormField<String>(
+                value: _role,
+                decoration: const InputDecoration(labelText: 'Daftar sebagai'),
+                items: const [
+                  DropdownMenuItem(value: 'seeker', child: Text('Pencari Kos')),
+                  DropdownMenuItem(value: 'owner', child: Text('Pemilik Kos')),
+                ],
+                onChanged: (v) {
+                  setState(() => _role = v ?? 'seeker');
+                },
+              ),
+
+              const SizedBox(height: 12),
+
+              // Email
               TextFormField(
                 controller: _emailC,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(labelText: 'Email'),
                 validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Email wajib diisi';
-                  if (!v.contains('@')) return 'Format email tidak valid';
+                  if (v == null || v.trim().isEmpty) {
+                    return 'Email wajib diisi';
+                  }
+                  if (!v.contains('@')) {
+                    return 'Format email tidak valid';
+                  }
                   return null;
                 },
               ),
+
               const SizedBox(height: 12),
+
+              // Password
               TextFormField(
                 controller: _passC,
                 obscureText: true,
                 decoration: const InputDecoration(labelText: 'Password'),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return 'Password wajib diisi';
-                  if (v.length < 6) return 'Minimal 6 karakter';
+                  if (v == null || v.isEmpty) {
+                    return 'Password wajib diisi';
+                  }
+                  if (v.length < 6) {
+                    return 'Minimal 6 karakter';
+                  }
                   return null;
                 },
               ),
+
               const SizedBox(height: 12),
+
+              // Konfirmasi Password
               TextFormField(
                 controller: _confirmC,
                 obscureText: true,
                 decoration: const InputDecoration(
                   labelText: 'Konfirmasi Password',
                 ),
-                validator: (v) =>
-                    v != _passC.text ? 'Password tidak sama' : null,
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return 'Konfirmasi password wajib diisi';
+                  }
+                  if (v != _passC.text) {
+                    return 'Password tidak sama';
+                  }
+                  return null;
+                },
               ),
+
               const SizedBox(height: 24),
+
+              // Tombol Register
               FilledButton(
                 onPressed: _loading ? null : _register,
                 child: _loading
