@@ -10,6 +10,10 @@ import 'services/auth_service.dart';
 // Global navigator key
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+// Global messenger key untuk menampilkan SnackBar
+final GlobalKey<ScaffoldMessengerState> messengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -46,6 +50,7 @@ class KosFinderApp extends StatelessWidget {
       title: 'KosFinder',
       theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
       navigatorKey: navigatorKey,
+      scaffoldMessengerKey: messengerKey,
       home: AuthService.instance.isLoggedIn
           ? const HomePage()
           : const LoginPage(),

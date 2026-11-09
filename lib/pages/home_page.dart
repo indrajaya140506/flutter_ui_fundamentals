@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../services/auth_service.dart';
 import '../services/profile_service.dart';
 import '../services/kos_service.dart';
+import '../services/notification_service.dart';
 import '../widgets/role_guard.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,19 +20,24 @@ class _HomePageState extends State<HomePage> {
 
   final KosService _kosService = KosService();
 
-  // GANTI dengan ID kos milik User A dari Supabase.
-  // ID ini digunakan saat login sebagai User B.
+  // ID kos milik User A untuk pengujian RLS.
   final String kosIdMilikUserA = 'd4c52254-0d13-4ee2-a06b-9133c5dc9944';
 
-  // GANTI dengan UUID akun User A dari Authentication > Users.
+  // UUID akun User A dari Authentication > Users.
   final String userAId = '9d460a35-359b-46ed-8037-e039b951c660';
 
   @override
   void initState() {
     super.initState();
 
+    // Memuat profil pengguna
     _profileFuture = ProfileService().getMyProfile();
+
+    // Memuat daftar kos
     _loadKos();
+
+    // Inisialisasi Firebase Messaging
+    NotificationService.instance.init();
   }
 
   // Mengambil daftar kos
